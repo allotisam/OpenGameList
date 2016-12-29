@@ -11,7 +11,44 @@ namespace OpenGameListWebApp.Controllers
     [Route("api/[controller]")]
     public class ItemsController : Controller
     {
+        #region RESTful Conventions
+
+        /// <summary>
+        /// GET: api/items
+        /// </summary>
+        /// <returns>Nothing: this method will raise a HttpNotFound HTTP exception, since we're not supporting this API call</returns>
+        [HttpGet()]
+        public IActionResult Get()
+        {
+            return NotFound(new { Error = "not found" });
+        }
+
+        /// <summary>
+        /// GET: api/items/{id}
+        /// ROUTING TYPE: attribute-based
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns>a Json-serialized object representing a single item.</returns>
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            return new JsonResult(GetSampleItems().Where(i => i.Id == id).FirstOrDefault(), DefaultJsonSettings);
+        }
+
+        #endregion
+
         #region Attribute-based Routing
+
+        /// <summary>
+        /// GET: api/items/GetLatest
+        /// ROUTING TYPE: attribute-based
+        /// </summary>
+        /// <returns>an array of a default number of Json-serialized objects representing the last inserted items.</returns>
+        [HttpGet("GetLatest")]
+        public IActionResult GetLatest()
+        {
+            return GetLatest(DefaultNumberOfItems);
+        }
 
         /// <summary>
         /// GET: api/items/GetLatest/{n}
@@ -22,9 +59,25 @@ namespace OpenGameListWebApp.Controllers
         [HttpGet("GetLatest/{n}")]
         public IActionResult GetLatest(int n)
         {
+            if (n > MaxNumberOfItems)
+            {
+                n = MaxNumberOfItems;
+            }
+
             var items = GetSampleItems().OrderByDescending(i => i.CreatedDate).Take(n);
 
             return new JsonResult(items, DefaultJsonSettings);            
+        }
+
+        /// <summary>
+        /// GET: api/items/GetMostViewed
+        /// ROUTING TYPE: attribute-based
+        /// </summary>
+        /// <returns>an array of default number of Json-serialized object representing the items with most user views.</returns>
+        [HttpGet("GetMostViewed")]
+        public IActionResult GetMostViewed()
+        {
+            return GetMostViewed(DefaultNumberOfItems);
         }
 
         /// <summary>
@@ -36,9 +89,25 @@ namespace OpenGameListWebApp.Controllers
         [HttpGet("GetMostViewed/{n}")]
         public IActionResult GetMostViewed(int n)
         {
+            if (n > MaxNumberOfItems)
+            {
+                n = MaxNumberOfItems;
+            }
+
             var items = GetSampleItems().OrderByDescending(i => i.ViewCount).Take(n);
 
             return new JsonResult(items, DefaultJsonSettings);
+        }
+
+        /// <summary>
+        /// api/items/GetRandom
+        /// ROUTING TYPE: attribute-based
+        /// </summary>
+        /// <returns>an array of a default number of Json-serialized objects representing some randomly-picked items</returns>
+        [HttpGet("GetRandom")]
+        public IActionResult GetRandon()
+        {
+            return GetRandom(DefaultNumberOfItems);
         }
 
         /// <summary>
@@ -50,6 +119,11 @@ namespace OpenGameListWebApp.Controllers
         [HttpGet("GetRandom/{n}")]
         public IActionResult GetRandom(int n)
         {
+            if (n > MaxNumberOfItems)
+            {
+                n = MaxNumberOfItems;
+            }
+
             var items = GetSampleItems().OrderBy(i => Guid.NewGuid()).Take(n);
 
             return new JsonResult(items, DefaultJsonSettings);
@@ -97,6 +171,19 @@ namespace OpenGameListWebApp.Controllers
                     Formatting = Formatting.Indented
                 };
             }
+        }
+
+        private int DefaultNumberOfItems
+        {
+            get
+            {
+                return 5;
+            }
+        }
+
+        private int MaxNumberOfItems
+        {
+            get { return 100; }
         }
 
         #endregion
