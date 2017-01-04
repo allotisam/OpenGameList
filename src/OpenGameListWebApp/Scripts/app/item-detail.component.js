@@ -31,8 +31,8 @@ System.register(["@angular/core", "./item"], function(exports_1, context_1) {
                 ItemDetailComponent = __decorate([
                     core_1.Component({
                         selector: "item-detail",
-                        template: "\n        <div *ngIf=\"item\" class=\"item-details\">\n            <h2>{{item.Title}} - Detail View</h2>\n            <ul>\n                <li>\n                    <label>Title:</label>\n                    <input [(ngModel)]=\"item.Title\" placeholder=\"Insert the title...\" />\n                </li>\n                <li>\n                    <label>Description:</label>\n                    <textarea [(ngModel)]=\"item.Description\" placeholder=\"Insert a suitable description...\" />\n                </li>\n            </ul>\n        </div>",
-                        styles: ["\n        .item-details { margin: 5px; padding: 5px 10px; border: 1px solid black; background-color: #dddddd; width: 300px; }\n        .item-details * { vertical-align: middle; }\n        .item-details ul li { padding: 5px 0; }\n    "]
+                        template: "\n        <div *ngIf=\"item\" class=\"item-details\">\n            <h2>{{item.Title}} - Detail View</h2>\n            <ul>\n                <li>\n                    <label>Title:</label>\n                    <input [(ngModel)]=\"item.Title\" placeholder=\"Insert the title...\" />\n                </li>\n                <li>\n                    <label>Description:</label>\n                    <textarea [(ngModel)]=\"item.Description\" placeholder=\"Insert a suitable description...\"></textarea>\n                </li>\n            </ul>\n        </div>",
+                        styles: ["\n        .item-details { margin: 5px; padding: 5px 10px; border: 1px solid black; background-color: #dddddd; width: 300px; }\n        .item-details * { vertical-align: middle; }\n        .item-details ul li { padding: 5px 0; }\n        .item-details ul li textarea { height: 100px; }\n    "]
                     }), 
                     __metadata('design:paramtypes', [])
                 ], ItemDetailComponent);
