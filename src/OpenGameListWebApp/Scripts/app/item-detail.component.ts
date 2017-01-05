@@ -37,7 +37,7 @@ export class ItemDetailComponent {
         var id = +this.activatedRoute.snapshot.params["id"];
         if (id) {
             this.itemService.get(id).subscribe(item => this.item = item);
-            console.log(this.item);
+            console.log("loading the details for item:  " + id + ", \ncontent: " + this.item);
         } else {
             console.log("Invalid id: routing back to home...");
             this.router.navigate([""]);

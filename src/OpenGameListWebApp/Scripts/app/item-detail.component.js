@@ -35,7 +35,7 @@ System.register(["@angular/core", "@angular/router", "./item.service"], function
                     var id = +this.activatedRoute.snapshot.params["id"];
                     if (id) {
                         this.itemService.get(id).subscribe(function (item) { return _this.item = item; });
-                        console.log(this.item);
+                        console.log("loading the details for item:  " + id + ", \ncontent: " + this.item);
                     }
                     else {
                         console.log("Invalid id: routing back to home...");
