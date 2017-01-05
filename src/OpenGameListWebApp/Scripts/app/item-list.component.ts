@@ -1,4 +1,5 @@
 ﻿import {Component, Input, OnInit} from "@angular/core";
+import {Router} from "@angular/router";
 import {Item} from "./item";
 import {ItemService} from "./item.service";
 
@@ -11,7 +12,6 @@ import {ItemService} from "./item.service";
                 <span>{{item.Title}}</span>
             </li>
         </ul>
-        <item-detail *ngIf="selectedItem" [item]="selectedItem"></item-detail>
         `,
     styles: [`
         ul.items li {
@@ -24,13 +24,13 @@ import {ItemService} from "./item.service";
 })
 
 export class ItemListComponent implements OnInit {
+    selectedItem: Item;
     @Input() class: string;
     title: string;
-    selectedItem: Item;
     items: Item[];
     errorMessage: string;
 
-    constructor(private itemService: ItemService) {
+    constructor(private itemService: ItemService, private router: Router) {
 
     }
 
@@ -59,14 +59,10 @@ export class ItemListComponent implements OnInit {
         );        
     }
 
-    //getLatest() {
-    //    this.itemService.getLatest()
-    //        .subscribe(latestItems => this.items = latestItems, error => this.errorMessage = <any>error);
-    //}
-
     onSelect(item: Item) {
         this.selectedItem = item;
-        console.log("item with Id " + this.selectedItem.Id + " has been selected.");
+        console.log("Item " + this.selectedItem.Id + " has been clicked: loading ItemDetailComponent...");
+        this.router.navigate(["item", this.selectedItem.Id]);
     }
 }
 
