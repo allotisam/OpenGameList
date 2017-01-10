@@ -1,9 +1,11 @@
-﻿using System;
+﻿using OpenGameListWebApp.Data.Users;
+using OpenGameListWebApp.Data.Comments;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace OpenGameListWebApp.Data.Items
 {
@@ -44,6 +46,21 @@ namespace OpenGameListWebApp.Data.Items
 
         [Required]
         public DateTime LastModifiedDate { get; set; }
+
+        #region Related Properties
+
+        /// <summary>
+        /// Current Item's Author: this property will be loaded on first use using EF's Lazy-Loading feature
+        /// </summary>
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser Author { get; set; }
+
+        /// <summary>
+        /// Current Item's Comment list: this property will be loaded on first use using EF's Lazy-Loading feature
+        /// </summary>
+        public virtual List<Comment> Comments { get; set; }
+
+        #endregion
 
     }
 }
