@@ -49,7 +49,7 @@ namespace OpenGameListWebApp.Data
 
         #region Methods
 
-        public DbSet<Item> Ietms { get; set; }
+        public DbSet<Item> Items { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
 
