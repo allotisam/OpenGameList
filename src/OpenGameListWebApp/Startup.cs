@@ -5,7 +5,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Nelibur.ObjectMapper;
 using OpenGameListWebApp.Data;
+using OpenGameListWebApp.Data.Items;
+using OpenGameListWebApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +70,9 @@ namespace OpenGameListWebApp
 
             // add MVC to the pipeline
             app.UseMvc();
+
+            // TinyMapper binding configuration
+            TinyMapper.Bind<Item, ItemViewModel>();
 
             // Seed the Database (if needed)
             try
