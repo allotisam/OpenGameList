@@ -66,7 +66,7 @@ namespace opengamelistwebapp.Data.Migrations
                     Flags = table.Column<int>(nullable: false),
                     ItemId = table.Column<int>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    ParentId = table.Column<int>(nullable: false),
+                    ParentId = table.Column<int>(nullable: true),
                     Text = table.Column<string>(nullable: false),
                     Type = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: false)
@@ -85,7 +85,7 @@ namespace opengamelistwebapp.Data.Migrations
                         column: x => x.ParentId,
                         principalTable: "Comments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Comments_Users_UserId",
                         column: x => x.UserId,

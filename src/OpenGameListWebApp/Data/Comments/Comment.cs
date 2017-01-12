@@ -32,7 +32,6 @@ namespace OpenGameListWebApp.Data.Comments
         [Required]
         public string UserId { get; set; }
 
-        [Required]
         public int? ParentId { get; set; }
 
         [Required]
