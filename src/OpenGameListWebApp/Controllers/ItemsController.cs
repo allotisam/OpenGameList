@@ -45,7 +45,92 @@ namespace OpenGameListWebApp.Controllers
         {
             var item = _dbContext.Items.Where(i => i.Id == id).FirstOrDefault();
 
-            return new JsonResult(TinyMapper.Map<ItemViewModel>(item), DefaultJsonSettings);
+            if (item != null)
+                return new JsonResult(TinyMapper.Map<ItemViewModel>(item), DefaultJsonSettings);
+            else
+                return NotFound(new { Error = string.Format("Item ID {0} has not been found", id) });            
+        }
+
+        /// <summary>
+        /// POST: api/items
+        /// </summary>
+        /// <param name="ivm"></param>
+        /// <returns>Creates a new Item and return it accordingly</returns>
+        [HttpPost()]
+        public IActionResult Add([FromBody]ItemViewModel ivm)
+        {
+            if (ivm != null)
+            {
+                // Create a new Item with the client-sent json data
+                var item = TinyMapper.Map<Item>(ivm);
+
+                // override any property that coculd be wise to set from server-side only
+                item.CreatedDate = item.LastModifiedDate = DateTime.Now;
+                item.UserId = _dbContext.Users.Where(u => u.UserName == "Admin").FirstOrDefault().Id;
+
+                _dbContext.Items.Add(item);
+                _dbContext.SaveChanges();
+
+                return new JsonResult(TinyMapper.Map<ItemViewModel>(item), DefaultJsonSettings);
+            }
+
+            // return a generic HTTP Status 500 (Not Found) if the client payload is invalid.
+            return new StatusCodeResult(500);
+        }
+
+        /// <summary>
+        /// PUT: api/items/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="ivm"></param>
+        /// <returns>Updates an existing item and return it accordingly</returns>
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody]ItemViewModel ivm)
+        {
+            if (ivm != null)
+            {
+                var item = _dbContext.Items.Where(i => i.Id == id).FirstOrDefault();
+
+                if (item != null)
+                {
+                    // handle the udpate
+                    item.UserId = ivm.UserId;
+                    item.Description = ivm.Description;
+                    item.Flags = ivm.Flags;
+                    item.Notes = ivm.Notes;
+                    item.Text = ivm.Text;
+                    item.Title = ivm.Title;
+                    item.Type = ivm.Type;
+                    item.LastModifiedDate = DateTime.Now;
+
+                    _dbContext.SaveChanges();
+
+                    return new JsonResult(TinyMapper.Map<ItemViewModel>(item), DefaultJsonSettings);
+                }
+            }
+
+            return NotFound(new { Error = string.Format("Item ID {0} has not been found.", id) });
+        }
+
+        /// <summary>
+        /// DELETE: api/items/{id}
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Deletes an Item, returning a HTTP status 200 (ok) when done.</returns>
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var item = _dbContext.Items.Where(i => i.Id == id).FirstOrDefault();
+
+            if (item != null)
+            {
+                _dbContext.Items.Remove(item);
+                _dbContext.SaveChanges();
+
+                return new OkResult();
+            }
+
+            return NotFound(new { Error = string.Format("Item ID {0} has not been found", id) });
         }
 
         #endregion
