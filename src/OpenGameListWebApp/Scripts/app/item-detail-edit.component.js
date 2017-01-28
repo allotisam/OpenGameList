@@ -11,7 +11,7 @@ System.register(["@angular/core", "@angular/router", "./item", "./item.service"]
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, router_1, item_1, item_service_1;
-    var ItemDetailComponent;
+    var ItemDetailEditComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -27,13 +27,13 @@ System.register(["@angular/core", "@angular/router", "./item", "./item.service"]
                 item_service_1 = item_service_1_1;
             }],
         execute: function() {
-            ItemDetailComponent = (function () {
-                function ItemDetailComponent(itemService, router, activatedRoute) {
+            ItemDetailEditComponent = (function () {
+                function ItemDetailEditComponent(itemService, router, activatedRoute) {
                     this.itemService = itemService;
                     this.router = router;
                     this.activatedRoute = activatedRoute;
                 }
-                ItemDetailComponent.prototype.ngOnInit = function () {
+                ItemDetailEditComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     var id = +this.activatedRoute.snapshot.params["id"];
                     if (id) {
@@ -49,7 +49,7 @@ System.register(["@angular/core", "@angular/router", "./item", "./item.service"]
                         this.router.navigate([""]);
                     }
                 };
-                ItemDetailComponent.prototype.onInsert = function (item) {
+                ItemDetailEditComponent.prototype.onInsert = function (item) {
                     var _this = this;
                     this.itemService.add(item).subscribe(function (data) {
                         _this.item = data;
@@ -57,15 +57,15 @@ System.register(["@angular/core", "@angular/router", "./item", "./item.service"]
                         _this.router.navigate([""]);
                     }, function (error) { return console.log(error); });
                 };
-                ItemDetailComponent.prototype.onUpdate = function (item) {
+                ItemDetailEditComponent.prototype.onUpdate = function (item) {
                     var _this = this;
                     this.itemService.update(item).subscribe(function (data) {
                         _this.item = data;
                         console.log("Item " + _this.item.Id + " has been updated.");
-                        _this.router.navigate([""]);
+                        _this.router.navigate(["item/view", _this.item.Id]);
                     }, function (error) { return console.log(error); });
                 };
-                ItemDetailComponent.prototype.onDelete = function (item) {
+                ItemDetailEditComponent.prototype.onDelete = function (item) {
                     var _this = this;
                     var id = item.Id;
                     this.itemService.delete(id).subscribe(function (data) {
@@ -73,20 +73,23 @@ System.register(["@angular/core", "@angular/router", "./item", "./item.service"]
                         _this.router.navigate([""]);
                     }, function (error) { return console.log(error); });
                 };
-                ItemDetailComponent.prototype.onBack = function () {
+                ItemDetailEditComponent.prototype.onBack = function () {
                     this.router.navigate([""]);
                 };
-                ItemDetailComponent = __decorate([
+                ItemDetailEditComponent.prototype.onItemDetailView = function (item) {
+                    this.router.navigate(["item/view", item.Id]);
+                };
+                ItemDetailEditComponent = __decorate([
                     core_1.Component({
-                        selector: "item-detail",
-                        template: "\n        <div *ngIf=\"item\" class=\"item-details\">\n            <h2>{{item.Title}} - Detail View</h2>\n            <ul>\n                <li>\n                    <label>Title:</label>\n                    <input [(ngModel)]=\"item.Title\" placeholder=\"Insert the title...\" />\n                </li>\n                <li>\n                    <label>Description:</label>\n                    <textarea [(ngModel)]=\"item.Description\" placeholder=\"Insert a suitable description...\"></textarea>\n                </li>\n            </ul>\n            <div *ngIf=\"item.Id == 0\" class=\"commands insert\">\n                <input type=\"button\" value=\"Save\" (click)=\"onInsert(item)\" />\n                <input type=\"button\" value=\"Cancel\" (click)=\"onBack()\" />\n            </div>\n            <div *ngIf=\"item.Id != 0\" class=\"commands update\">\n                <input type=\"button\" value=\"Update\" (click)=\"onUpdate(item)\" />\n                <input type=\"button\" value=\"Delete\" (click)=\"onDelete(item)\" />\n                <input type=\"button\" value=\"Back\" (click)=\"onBack()\" />\n            </div>\n        </div>",
-                        styles: ["\n        .item-details { margin: 5px; padding: 5px 10px; border: 1px solid black; background-color: #dddddd; width: 300px; }\n        .item-details * { vertical-align: middle; }\n        .item-details ul li { padding: 5px 0; }\n        .item-details ul li textarea { height: 100px; }\n    "]
+                        selector: "item-detail-edit",
+                        template: "\n        <div *ngIf=\"item\" class=\"item-container\">\n            <div class=\"item-tab-menu\">\n                <span class=\"selected\">Edit</span>\n                <span *ngIf=\"item.Id != 0\" (click)=\"onItemDetailView(item)\">View</span>\n            </div>\n            <div class=\"item-details\">\n                <div class=\"mode\">Edit Mode</div>\n                <h2>{{item.Title}}</h2>\n                <ul>\n                    <li>\n                        <label>Title:</label>\n                        <input [(ngModel)]=\"item.Title\" placeholder=\"Insert the title...\" />\n                    </li>\n                    <li>\n                        <label>Description:</label>\n                        <textarea [(ngModel)]=\"item.Description\" placeholder=\"Insert a suitable description...\"></textarea>\n                    </li>\n                </ul>\n                <div *ngIf=\"item.Id == 0\" class=\"commands insert\">\n                    <input type=\"button\" value=\"Save\" (click)=\"onInsert(item)\" />\n                    <input type=\"button\" value=\"Cancel\" (click)=\"onBack()\" />\n                </div>\n                <div *ngIf=\"item.Id != 0\" class=\"commands update\">\n                    <input type=\"button\" value=\"Update\" (click)=\"onUpdate(item)\" />\n                    <input type=\"button\" value=\"Delete\" (click)=\"onDelete(item)\" />\n                    <input type=\"button\" value=\"Cancel\" (click)=\"onItemDetailView(item)\" />\n                </div>\n            </div>\n        </div>",
+                        styles: ["\n        .item-container { width: 600px; }\n        .item-tab-menu { margin-right: 30px; }\n        .item-tab-menu span {\n            background-color: #dddddd;\n            border: 1px solid #666666;\n            border-bottom: 0;\n            cursor: pointer;\n            display: block;\n            float: right;\n            margin: 0 0 -1px 5px;\n            padding: 5px 10px 4px 10px;\n            text-align: center;\n            width: 60px;\n        }\n        .item-tab-menu span.selected {\n            background-color: #eeeeee;\n            cursor: auto;\n            font-weight: bold;\n            padding-bottom: 5px;\n        }\n        .item-details { margin: 0px; padding: 5px 10px; border: 1px solid black; background-color: #eeeeee; clear: both; }\n        .item-details * { vertical-align: middle; }\n        .item-details .mode { font-size: 0.8em; color: #777777; }\n        .item-details ul li { padding: 5px 0; }\n        .item-details input[type=\"text\"] { display: block; width: 100%; }\n        .item-details textarea { display: block; width: 100%; height: 60px; }\n        .commands { text-align: right; margin: 10px 20px 10px 10px; }\n    "]
                     }), 
                     __metadata('design:paramtypes', [item_service_1.ItemService, router_1.Router, router_1.ActivatedRoute])
-                ], ItemDetailComponent);
-                return ItemDetailComponent;
+                ], ItemDetailEditComponent);
+                return ItemDetailEditComponent;
             }());
-            exports_1("ItemDetailComponent", ItemDetailComponent);
+            exports_1("ItemDetailEditComponent", ItemDetailEditComponent);
         }
     }
 });

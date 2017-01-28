@@ -52,8 +52,8 @@ System.register(["@angular/core", "@angular/router", "./item.service"], function
                 };
                 ItemListComponent.prototype.onSelect = function (item) {
                     this.selectedItem = item;
-                    console.log("Item " + this.selectedItem.Id + " has been clicked: loading ItemDetailComponent...");
-                    this.router.navigate(["item", this.selectedItem.Id]);
+                    console.log("Item " + this.selectedItem.Id + " has been clicked: loading ItemDetailViewComponent...");
+                    this.router.navigate(["item/view", this.selectedItem.Id]);
                 };
                 __decorate([
                     core_1.Input(), 
