@@ -1,4 +1,4 @@
-/// <binding />
+/// <binding Clean='default' />
 /*
 This file in the main entry point for defining Gulp tasks and using Gulp plugins.
 Click here to learn more. http://go.microsoft.com/fwlink/?LinkId=518007
@@ -21,8 +21,8 @@ var srcPaths = {
         'node_modules/reflect-metadata/Reflect.js',
         'node_modules/systemjs/dist/system.src.js',
         'node_modules/typescript/lib/typescript.js',
-        'node_modules/ng2-bootstrap/bundles/ng2-bootstrap.umd.min.js',
-        'node_modules/moment/moment.js'
+        'node_modules/moment/moment.js',
+        'node_modules/ng2-bootstrap/bundles/ng2-bootstrap.umd.min.js'
     ],
     js_angular: [
         'node_modules/@angular/**'
