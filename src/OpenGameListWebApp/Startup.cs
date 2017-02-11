@@ -6,10 +6,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Nelibur.ObjectMapper;
 using OpenGameListWebApp.Data;
 using OpenGameListWebApp.Data.Items;
 using OpenGameListWebApp.Data.Users;
+using OpenGameListWebApp.Infrastructure;
 using OpenGameListWebApp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -77,6 +79,25 @@ namespace OpenGameListWebApp
                     context.Context.Response.Headers["Cache-Control"] = Configuration["StaticFiles:Headers:Cache-Control"];
                     context.Context.Response.Headers["Pragma"] = Configuration["StaticFiles:Headers:Pragma"];
                     context.Context.Response.Headers["Expires"] = Configuration["StaticFiles:Headers:Expires"];
+                }
+            });
+
+            // add a custom Jwt Provider to generate Tokens
+            app.UseJwtProvider();
+
+            // add the Jwt Bearer Header Authentication to valid tokens
+            app.UseJwtBearerAuthentication(new JwtBearerOptions()
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                RequireHttpsMetadata = false,
+                TokenValidationParameters = new TokenValidationParameters()
+                {
+                    IssuerSigningKey = JwtProvider.SecurityKey,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = JwtProvider.Issuer,
+                    ValidateIssuer = false,
+                    ValidateAudience = false
                 }
             });
 
