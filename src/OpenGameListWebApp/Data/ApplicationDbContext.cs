@@ -11,14 +11,11 @@ using System.Threading.Tasks;
 
 namespace OpenGameListWebApp.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         #region Constructor
 
-        public ApplicationDbContext(DbContextOptions options) : base(options)
-        {
-
-        }
+        public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
         #endregion
 
@@ -51,7 +48,6 @@ namespace OpenGameListWebApp.Data
 
         public DbSet<Item> Items { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<ApplicationUser> Users { get; set; }
 
         #endregion
 

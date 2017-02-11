@@ -1,4 +1,5 @@
-﻿using OpenGameListWebApp.Data.Comments;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using OpenGameListWebApp.Data.Comments;
 using OpenGameListWebApp.Data.Items;
 using System;
 using System.Collections.Generic;
@@ -10,20 +11,26 @@ using System.Threading.Tasks;
 
 namespace OpenGameListWebApp.Data.Users
 {
-    public class ApplicationUser
+    public class ApplicationUser : IdentityUser
     {
         public ApplicationUser() { }
 
-        [Key]
-        [Required]
-        public string Id { get; set; }
+        #region IdentityUser Properties
 
-        [Required]
-        [MaxLength(128)]
-        public string UserName { get; set; }
+        // commented them out once we inherited IdentityUser class, which it already contains these properties
 
-        [Required]
-        public string Email { get; set; }
+        //[Key]
+        //[Required]
+        //public string Id { get; set; }
+
+        //[Required]
+        //[MaxLength(128)]
+        //public string UserName { get; set; }
+
+        //[Required]
+        //public string Email { get; set; }
+
+        #endregion IdentityUser Properties
 
         public string DisplayName { get; set; }
 
