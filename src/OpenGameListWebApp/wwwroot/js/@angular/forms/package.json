@@ -2,7 +2,7 @@
   "_args": [
     [
       "@angular/forms@0.3.0",
-      "C:\\Users\\jeong.park\\documents\\visual studio 2015\\Projects\\OpenGameList\\src\\OpenGameListWebApp"
+      "C:\\Users\\jeong.park\\Documents\\Visual Studio 2015\\Projects\\OpenGameList\\src\\OpenGameListWebApp"
     ]
   ],
   "_from": "@angular/forms@0.3.0",
@@ -35,7 +35,7 @@
   "_shasum": "d76218bb22b74d5ac3878915d377de0487c34069",
   "_shrinkwrap": null,
   "_spec": "@angular/forms@0.3.0",
-  "_where": "C:\\Users\\jeong.park\\documents\\visual studio 2015\\Projects\\OpenGameList\\src\\OpenGameListWebApp",
+  "_where": "C:\\Users\\jeong.park\\Documents\\Visual Studio 2015\\Projects\\OpenGameList\\src\\OpenGameListWebApp",
   "author": {
     "name": "angular"
   },

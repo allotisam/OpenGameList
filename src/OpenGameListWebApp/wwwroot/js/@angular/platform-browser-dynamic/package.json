@@ -2,7 +2,7 @@
   "_args": [
     [
       "@angular/platform-browser-dynamic@2.0.0-rc.5",
-      "c:\\users\\jeong.park\\documents\\visual studio 2015\\Projects\\OpenGameList\\src\\OpenGameListWebApp"
+      "C:\\Users\\jeong.park\\Documents\\Visual Studio 2015\\Projects\\OpenGameList\\src\\OpenGameListWebApp"
     ]
   ],
   "_from": "@angular/platform-browser-dynamic@2.0.0-rc.5",
@@ -35,7 +35,7 @@
   "_shasum": "4a5362679a9378600a1cc012030f2bc51555f530",
   "_shrinkwrap": null,
   "_spec": "@angular/platform-browser-dynamic@2.0.0-rc.5",
-  "_where": "c:\\users\\jeong.park\\documents\\visual studio 2015\\Projects\\OpenGameList\\src\\OpenGameListWebApp",
+  "_where": "C:\\Users\\jeong.park\\Documents\\Visual Studio 2015\\Projects\\OpenGameList\\src\\OpenGameListWebApp",
   "author": {
     "name": "angular"
   },
