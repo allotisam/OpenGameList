@@ -1,4 +1,5 @@
-﻿import {Injectable, EventEmitter} from "@angular/core";
+﻿import {AuthHttp} from "./auth.http";
+import {Injectable, EventEmitter} from "@angular/core";
 import {Http, Headers, Response, RequestOptions} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 
@@ -6,7 +7,7 @@ import {Observable} from "rxjs/Observable";
 export class AuthService {
     authKey = "auth";
 
-    constructor(private http: Http) {
+    constructor(private http: AuthHttp) {
 
     }
 
