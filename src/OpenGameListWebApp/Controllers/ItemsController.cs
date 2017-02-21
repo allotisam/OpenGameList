@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nelibur.ObjectMapper;
 using Newtonsoft.Json;
 using OpenGameListWebApp.Data;
@@ -7,7 +8,7 @@ using OpenGameListWebApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace OpenGameListWebApp.Controllers
 {
@@ -57,6 +58,7 @@ namespace OpenGameListWebApp.Controllers
         /// <param name="ivm"></param>
         /// <returns>Creates a new Item and return it accordingly</returns>
         [HttpPost()]
+        [Authorize]
         public IActionResult Add([FromBody]ItemViewModel ivm)
         {
             if (ivm != null)
@@ -66,7 +68,7 @@ namespace OpenGameListWebApp.Controllers
 
                 // override any property that coculd be wise to set from server-side only
                 item.CreatedDate = item.LastModifiedDate = DateTime.Now;
-                item.UserId = _dbContext.Users.Where(u => u.UserName == "Admin").FirstOrDefault().Id;
+                item.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
                 _dbContext.Items.Add(item);
                 _dbContext.SaveChanges();
@@ -85,6 +87,7 @@ namespace OpenGameListWebApp.Controllers
         /// <param name="ivm"></param>
         /// <returns>Updates an existing item and return it accordingly</returns>
         [HttpPut("{id}")]
+        [Authorize]
         public IActionResult Update(int id, [FromBody]ItemViewModel ivm)
         {
             if (ivm != null)
@@ -118,6 +121,7 @@ namespace OpenGameListWebApp.Controllers
         /// <param name="id"></param>
         /// <returns>Deletes an Item, returning a HTTP status 200 (ok) when done.</returns>
         [HttpDelete("{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             var item = _dbContext.Items.Where(i => i.Id == id).FirstOrDefault();

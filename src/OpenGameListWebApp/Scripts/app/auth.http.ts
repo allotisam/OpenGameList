@@ -11,7 +11,23 @@ export class AuthHttp {
     }
 
     get(url, opts = {}) {
-        
+        this.configureAuth(opts);
+        return this.http.get(url, opts);        
+    }
+
+    post(url, data, opts = {}) {
+        this.configureAuth(opts);
+        return this.http.post(url, data, opts);
+    }
+
+    put(url, data, opts = {}) {
+        this.configureAuth(opts);
+        return this.http.put(url, data, opts);
+    }
+
+    delete(url, opts = {}) {
+        this.configureAuth(opts);
+        return this.http.delete(url, opts);
     }
 
     configureAuth(opts: any) {
@@ -23,7 +39,7 @@ export class AuthHttp {
                 if (opts.headers == null) {
                     opts.headers = new Headers();
                 }
-                opts.headers.set("Authorization", `Bearer${auth.access_token}`);
+                opts.headers.set("Authorization", `Bearer ${auth.access_token}`);
             }
         }
     }

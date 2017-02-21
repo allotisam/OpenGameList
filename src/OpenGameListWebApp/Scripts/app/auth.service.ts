@@ -1,15 +1,13 @@
-﻿import {AuthHttp} from "./auth.http";
-import {Injectable, EventEmitter} from "@angular/core";
+﻿import {Injectable, EventEmitter} from "@angular/core";
 import {Http, Headers, Response, RequestOptions} from "@angular/http";
 import {Observable} from "rxjs/Observable";
+import {AuthHttp} from "./auth.http";
 
 @Injectable()
 export class AuthService {
     authKey = "auth";
 
-    constructor(private http: AuthHttp) {
-
-    }
+    constructor(private http: AuthHttp) { }
 
     login(username: string, password: string): any {
         var url = "api/connect/token";  //JwtProvider's LoginPath

@@ -6,9 +6,7 @@ using Newtonsoft.Json;
 using OpenGameListWebApp.Data;
 using OpenGameListWebApp.Data.Users;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,6 +45,12 @@ namespace OpenGameListWebApp.Infrastructure
         public JwtProvider(RequestDelegate next, ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _next = next;
+
+            // Instantiate JWT-related members
+            TokenExpiration = TimeSpan.FromMinutes(10);
+            SigningCredentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256);
+
+            // Instantiate through Dependency Injection
             DbContext = dbContext;
             UserManager = userManager;
             SignInManager = signInManager;
