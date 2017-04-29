@@ -37,6 +37,13 @@ namespace OpenGameListWebApp
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            // configure a rewrite rule to auto-lookup for standard default files such as index.html.
+            app.UseDefaultFiles();
+
+            // serve static files (html, css, js, images, & more)
+            app.UseStaticFiles();
+
+            // add MVC to the pipelines
             app.UseMvc();
         }
     }
