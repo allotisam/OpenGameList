@@ -41,7 +41,16 @@ namespace OpenGameListWebApp
             app.UseDefaultFiles();
 
             // serve static files (html, css, js, images, & more)
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                OnPrepareResponse = (context) =>
+                {
+                    // Disable caching for all static files
+                    context.Context.Response.Headers["Cache-Control"] = Configuration["StaticFiles:Headers:Cache-Control"];
+                    context.Context.Response.Headers["Pragma"] = Configuration["StaticFiles:Headers:Pragma"];
+                    context.Context.Response.Headers["Expires"] = Configuration["StaticFiles:Headers:Expires"];
+                }
+            });
 
             // add MVC to the pipelines
             app.UseMvc();
