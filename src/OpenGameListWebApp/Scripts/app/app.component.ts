@@ -1,7 +1,12 @@
-﻿import {Component} from "@angular/core";
+﻿import { Component } from "@angular/core";
 
 @Component({
     selector: "opengamelist",
-    template: `<h1>OpenGameList</h1><div>Work in progress...Best is yet to come</div>`
+    template: `
+        <h1>{{title}}</h1>
+        <item-list></item-list> 
+    `
 })
-export class AppComponent { }
+export class AppComponent {
+    title = "OpenGameList";
+}
