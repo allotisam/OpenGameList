@@ -2,15 +2,15 @@
 
     // map tells the system loader where to look for things
     var map = {
-        'app': 'app',
-        '@angular': 'js/@angular',
-        'rxjs': 'js/rxjs'
+        'app': 'app'
+        ,'@angular': 'js/@angular'
+        ,'rxjs': 'js/rxjs'
     };
 
     //package tells the system which filename and/or extensions to look for by default (when none are specified)
     var packages = {
-        'app': { main: 'main.js', defaultExtension: 'js' },
-        'rxjs': { defaultExtension: 'js' }
+        'app': { main: 'main.js', defaultExtension: 'js' }
+        ,'rxjs': { defaultExtension: 'js' }
     };
 
     // configure @angular packages
@@ -22,7 +22,8 @@
         'platform-browser',
         'platform-browser-dynamic',
         'upgrade',
-        'forms'
+        'forms',
+        'router'
     ];
 
     function packIndex(pkgName) {
