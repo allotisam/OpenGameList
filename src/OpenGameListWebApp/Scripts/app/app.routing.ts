@@ -12,8 +12,8 @@ const appRoutes: Routes = [
     { path: "home", redirectTo: "" },
     { path: "about", component: AboutComponent },
     { path: "login", component: LoginComponent },
-    { path: '**', component: PageNotFoundComponent },
-    { path: "item/:id", component: ItemDetailComponent }
+    { path: "item/:id", component: ItemDetailComponent },
+    { path: '**', component: PageNotFoundComponent }    
 ];
 
 export const AppRoutingProviders: any[] = [

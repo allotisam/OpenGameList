@@ -42,10 +42,9 @@ export class ItemDetailComponent {
     constructor(private itemService: ItemService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
-        var id = +this.activatedRoute.params["id"];
+        var id = +this.activatedRoute.snapshot.params["id"];
         if (id) {
-            this.itemService.get(id).subscribe(item => this.item == item);
-            console.log(this.item);
+            this.itemService.get(id).subscribe(item => this.item = item);
         } else {
             console.log("Invalid id: routing back to home...");
             this.router.navigate([""]);
