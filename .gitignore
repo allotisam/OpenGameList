@@ -240,3 +240,8 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+
+# Ignore OpenGameList project specific *.js files
+src/OpenGameListWebApp/Scripts/**/*.js
+src/OpenGameListWebApp/Scripts/**/*.map
