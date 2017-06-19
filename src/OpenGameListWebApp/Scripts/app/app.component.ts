@@ -2,6 +2,10 @@
 
 @Component({
     selector: "opengamelist",
-    template: `<h1>Opengamelist</h1><div>Work in progress...the best is yet to come!</div>`
+    template: `
+        <h1>{{title}}</h1>
+        <item-list></item-list>`
 })
-export class AppComponent { }
+export class AppComponent {
+    title = "OpenGameList";
+}
