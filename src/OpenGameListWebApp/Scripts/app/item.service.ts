@@ -43,6 +43,15 @@ export class ItemService {
             .catch(this.handleError);
     }
 
+    get(id: number) {
+        if (id == null) {
+            throw new Error("id is required");
+        }
+
+        var url = this.baseUrl + id;
+        return this.http.get(url).map(response => <Item>response.json()).catch(this.handleError);
+    }
+
     private handleError(error: Response) {
         console.error(error);
         return Observable.throw(error.json().error || "Server Error");

@@ -1,4 +1,5 @@
 ﻿import { Component, Input, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { Item } from "./item";
 import { ItemService } from "./item.service";
 import { Observable } from "rxjs/Observable";
@@ -11,8 +12,7 @@ import { Observable } from "rxjs/Observable";
             <li *ngFor="let item of items" [class.selected]="item === selectedItem" (click)="onSelect(item)">
                 <span>{{item.Title}}</span>
             </li>
-        </ul>
-        <item-detail *ngIf="selectedItem" [item]="selectedItem"></item-detail>`,
+        </ul>`,
     styles: [`
         ul.items li {
             cursor: pointer;
@@ -29,7 +29,7 @@ export class ItemListComponent implements OnInit {
     items: Item[];
     errorMessage: string;
 
-    constructor(private itemService: ItemService) { }
+    constructor(private itemService: ItemService, private router: Router) { }
 
     ngOnInit() {
         console.log("ItemListComponent instantiated with the following type: " + this.class);
@@ -55,12 +55,9 @@ export class ItemListComponent implements OnInit {
         s.subscribe(items => this.items = items, error => this.errorMessage = <any>error);
     }
 
-    getLatest() {
-        this.itemService.getLatest().subscribe(latestItems => this.items = latestItems, error => this.errorMessage = <any>error);
-    }
-
     onSelect(item: Item) {
         this.selectedItem = item;
-        console.log("item with Id " + this.selectedItem.Id + " has been selected.");
+        console.log("item with Id " + this.selectedItem.Id + " has been selected. loading ItemDetailComponenet...");
+        this.router.navigate(["item", this.selectedItem.Id]);
     }
 }
