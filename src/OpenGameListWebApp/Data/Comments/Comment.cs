@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OpenGameListWebApp.Data.Items;
+using OpenGameListWebApp.Data.Users;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -39,5 +41,21 @@ namespace OpenGameListWebApp.Data.Comments
         public DateTime LastModifiedDate { get; set; }
 
         #endregion Properties
+
+        #region Related Properties
+
+        [ForeignKey("ItemId")]
+        public virtual Item Item { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser Author { get; set; }
+
+        [ForeignKey("ParentId")]
+        public virtual Comment Parent { get; set; }
+
+        public virtual List<Comment> Children { get; set; }
+
+        #endregion Related Properties
+
     }
 }
