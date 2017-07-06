@@ -15,7 +15,7 @@ import { ItemService } from "./item.service";
                 </li>
                 <li>
                     <label>Description:</label>
-                    <textarea [(ngModel)]="item.description" placeholder="Insert a suitable description..."></textarea>
+                    <textarea [(ngModel)]="item.Description" placeholder="Insert a suitable description..."></textarea>
                 </li>
             </ul>
         </div>`,
@@ -48,7 +48,6 @@ export class ItemDetailComponent {
         var id = +this.activatedRoute.snapshot.params["id"];
         if (id) {
             this.itemService.get(id).subscribe(item => this.item = item);
-            console.log(this.item);
         } else {
             console.log("Invalid Id: routing back to home...");
             this.router.navigate([""]);
