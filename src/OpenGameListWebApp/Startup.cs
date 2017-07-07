@@ -41,10 +41,13 @@ namespace OpenGameListWebApp
             {
                 options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]);
             });
+
+            // Add ApplicationDbContext's DbSeeder
+            services.AddSingleton<DbSeeder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DbSeeder dbSeeder)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -66,6 +69,16 @@ namespace OpenGameListWebApp
 
             // Add MVC to the pipeline.
             app.UseMvc();
+
+            // Seed the Database if needed
+            try
+            {
+                dbSeeder.SeedAsync().Wait();
+            }
+            catch (AggregateException e)
+            {
+                throw new Exception(e.ToString());
+            }
         }
     }
 }
