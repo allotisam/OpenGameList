@@ -48,7 +48,11 @@ namespace OpenGameListWebApp.Controllers
         public IActionResult Get(int id)
         {
             var item = DbContext.Items.Where(i => i.Id == id).FirstOrDefault();
-            return new JsonResult(AutoMapper.Mapper.Map<Item, ItemViewModel>(item), DefaultJsonSettings);
+
+            if (item != null)
+                return new JsonResult(AutoMapper.Mapper.Map<Item, ItemViewModel>(item), DefaultJsonSettings);
+            else
+                return NotFound(new { Error = string.Format("Item ID {0} has not been found", id) });
         }
 
         // GET: api/items/GetLatest
@@ -103,6 +107,66 @@ namespace OpenGameListWebApp.Controllers
 
             var items = DbContext.Items.OrderBy(i => Guid.NewGuid()).Take(num).ToArray();
             return new JsonResult(ToItemViewModelList(items), DefaultJsonSettings);
+        }
+
+        // POST: api/items
+        [HttpPost()]
+        public IActionResult Add([FromBody]ItemViewModel ivm)
+        {
+            if (ivm != null)
+            {
+                var item = AutoMapper.Mapper.Map<ItemViewModel, Item>(ivm);
+                item.CreatedDate = item.LastModifiedDate = DateTime.Now;
+                item.UserId = DbContext.Users.Where(u => u.UserName == "Admin").FirstOrDefault().Id;
+
+                DbContext.Items.Add(item);
+                DbContext.SaveChanges();
+
+                return new JsonResult(AutoMapper.Mapper.Map<Item, ItemViewModel>(item), DefaultJsonSettings);
+            }
+
+            return new StatusCodeResult(500);
+        }
+
+        // POST: api/items/{id}
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody]ItemViewModel ivm)
+        {
+            if (ivm != null)
+            {
+                var item = DbContext.Items.Where(i => i.Id == id).FirstOrDefault();
+                if (item != null)
+                {
+                    item.UserId = ivm.UserId;
+                    item.Description = ivm.Description;
+                    item.Flags = ivm.Flags;
+                    item.Notes = ivm.Notes;
+                    item.Text = ivm.Text;
+                    item.Title = ivm.Title;
+                    item.Type = ivm.Type;
+                    item.LastModifiedDate = DateTime.Now;
+
+                    DbContext.SaveChanges();
+
+                    return new JsonResult(AutoMapper.Mapper.Map<Item, ItemViewModel>(item), DefaultJsonSettings);
+                }
+            }
+            return NotFound(new { Error = string.Format("Item ID {0} has not been found", id) });
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var item = DbContext.Items.Where(i => i.Id == id).FirstOrDefault();
+            if (item != null)
+            {
+                DbContext.Items.Remove(item);
+                DbContext.SaveChanges();
+
+                return new OkResult();
+            }
+
+            return NotFound(new { Error = string.Format("Item ID {0} has not been found", id) });
         }
 
         #endregion
