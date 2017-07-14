@@ -6,6 +6,7 @@ Click here to learn more. http://go.microsoft.com/fwlink/?LinkId=518007
 var gulp = require('gulp'),
     gp_clean = require('gulp-clean'),
     gp_concat = require('gulp-concat'),
+    gp_less = require('gulp-less'),
     gp_sourcemaps = require('gulp-sourcemaps'),
     gp_typescript = require('gulp-typescript'),
     gp_uglify = require('gulp-uglify');
@@ -27,11 +28,15 @@ var srcPaths = {
     ],
     js_rxjs: [
         'node_modules/rxjs/**'
+    ],
+    less: [
+        'scripts/less/**/*.less'
     ]
 };
 
 var destPaths = {
     app: 'wwwroot/app/',
+    css: 'wwwroot/css',
     js: 'wwwroot/js/',
     js_angular: 'wwwroot/js/@angular/',
     js_rxjs: 'wwwroot/js/rxjs'
@@ -47,7 +52,6 @@ gulp.task('app', ['app_clean'], function () {
     .pipe(gp_sourcemaps.write('/'))
     .pipe(gulp.dest(destPaths.app));
 });
-
 
 // Delete wwwroot/app contents
 gulp.task('app_clean', function () {
@@ -67,7 +71,6 @@ gulp.task('js', function () {
     .pipe(gulp.dest(destPaths.js));
 });
 
-
 // Delete wwwrooot/js contents
 gulp.task('js_clean', function () {
     return gulp.src(destPaths.js + "*", { read: false })
@@ -75,12 +78,30 @@ gulp.task('js_clean', function () {
 });
 
 
-// Watch specified files and define what to do upon file changes
-gulp.task('watch', function () {
-    gulp.watch([srcPaths.app, srcPaths.js], ['app', 'js']);
+// Process all LESS files and output the resulting CSS in wwwroot/css
+gulp.task('less', ['less_clean'], function () {
+    return gulp.src(srcPaths.less)
+    .pipe(gp_less())
+    .pipe(gulp.dest(destPaths.css));
+});
+
+// Delete wwwroot/css
+gulp.task('less_clean', function () {
+    return gulp.src(destPaths.css + "*.*", { read: false })
+    .pipe(gp_clean({ force: true }));
 });
 
 
+// Watch specified files and define what to do upon file changes
+gulp.task('watch', function () {
+    gulp.watch([srcPaths.app, srcPaths.js, srcPaths.less], ['app', 'js', 'less']);
+});
+
+
+// Global cleanup task
+gulp.task('cleanup', ['app_clean', 'js_clean', 'less_clean']);
+
+
 // Define the default task so that it will launch all other tasks
-gulp.task('default', ['app', 'js', 'watch']);
+gulp.task('default', ['app', 'js', 'less', 'watch']);
 

@@ -76,6 +76,7 @@ import { ItemService } from "./item.service";
         }
         .item-details ul li {
             padding: 5px 0;
+            margin-right: 10px;
         }
         .item-details input[type="text"] {
             display: block;
