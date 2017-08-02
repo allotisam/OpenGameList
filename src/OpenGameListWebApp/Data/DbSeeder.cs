@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OpenGameListWebApp.Data;
 using OpenGameListWebApp.Data.Comments;
@@ -16,12 +18,19 @@ namespace OpenGameListWebApp.Data
         #region Private Members
 
         private ApplicationDbContext DbContext;
+        private RoleManager<IdentityRole> RoleManager;
+        private UserManager<ApplicationUser> UserManager;
 
         #endregion Private Members
 
         #region Constructor
 
-        public DbSeeder(ApplicationDbContext context) { DbContext = context; }
+        public DbSeeder(ApplicationDbContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        {
+            DbContext = context;
+            RoleManager = roleManager;
+            UserManager = userManager;
+        }
 
         #endregion Constructor
 
@@ -32,7 +41,7 @@ namespace OpenGameListWebApp.Data
             DbContext.Database.EnsureCreated();
 
             if (await DbContext.Users.CountAsync() == 0)
-                CreateUsers();
+                await CreateUsersAsync();
 
             if (await DbContext.Items.CountAsync() == 0)
                 CreateItems();
@@ -42,10 +51,12 @@ namespace OpenGameListWebApp.Data
 
         #region Seed Methods
 
-        private void CreateUsers()
+        private async Task CreateUsersAsync()
         {
             DateTime createdDate = new DateTime(2016, 03, 01, 12, 30, 00);
             DateTime lastModifiedDate = DateTime.Now;
+            string role_Administrator = "Administrators";
+            string role_Registered = "Registered";
 
             var user_Admin = new ApplicationUser
             {
@@ -56,7 +67,13 @@ namespace OpenGameListWebApp.Data
                 LastModifiedDate = lastModifiedDate
             };
 
-            DbContext.Users.Add(user_Admin);
+            if (await UserManager.FindByIdAsync(user_Admin.Id) == null)
+            {
+                await UserManager.CreateAsync(user_Admin, "Pass4Admin");
+                await UserManager.AddToRoleAsync(user_Admin, role_Administrator);
+                user_Admin.EmailConfirmed = true;
+                user_Admin.LockoutEnabled = false;
+            }
 
 #if DEBUG
             var user_Ryan = new ApplicationUser
@@ -84,9 +101,29 @@ namespace OpenGameListWebApp.Data
                 LastModifiedDate = lastModifiedDate
             };
 
-            DbContext.Users.AddRange(user_Ryan, user_Solice, user_Vodan);
+            if (await UserManager.FindByIdAsync(user_Ryan.Id) == null)
+            {
+                await UserManager.CreateAsync(user_Ryan, "Pass4Ryan");
+                await UserManager.AddToRoleAsync(user_Ryan, role_Registered);
+                user_Ryan.EmailConfirmed = true;
+                user_Ryan.LockoutEnabled = false;
+            }
+            if (await UserManager.FindByIdAsync(user_Solice.Id) == null)
+            {
+                await UserManager.CreateAsync(user_Solice, "Pass4Solice");
+                await UserManager.AddToRoleAsync(user_Solice, role_Registered);
+                user_Solice.EmailConfirmed = true;
+                user_Solice.LockoutEnabled = false;
+            }
+            if (await UserManager.FindByIdAsync(user_Vodan.Id) == null)
+            {
+                await UserManager.CreateAsync(user_Vodan, "Pass4Vodan");
+                await UserManager.AddToRoleAsync(user_Vodan, role_Registered);
+                user_Vodan.EmailConfirmed = true;
+                user_Vodan.LockoutEnabled = false;
+            }
 #endif
-            DbContext.SaveChanges();
+            await DbContext.SaveChangesAsync();
         }
 
         private void CreateItems()

@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OpenGameListWebApp.Data;
+using OpenGameListWebApp.Data.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +38,16 @@ namespace OpenGameListWebApp
 
             // Add EntityFramework & Identity Support
             services.AddEntityFramework();
+
+            // Add Identity Services & Stores
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Cookies.ApplicationCookie.AutomaticChallenge = false;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
             // Add ApplicationDbContext
             services.AddDbContext<ApplicationDbContext>(options =>
