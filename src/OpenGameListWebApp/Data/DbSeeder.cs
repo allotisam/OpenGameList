@@ -58,6 +58,11 @@ namespace OpenGameListWebApp.Data
             string role_Administrator = "Administrators";
             string role_Registered = "Registered";
 
+            if (!await RoleManager.RoleExistsAsync(role_Administrator))
+                await RoleManager.CreateAsync(new IdentityRole(role_Administrator));
+            if (!await RoleManager.RoleExistsAsync(role_Registered))
+                await RoleManager.CreateAsync(new IdentityRole(role_Registered));
+
             var user_Admin = new ApplicationUser
             {
                 Id = Guid.NewGuid().ToString(),
