@@ -25,7 +25,7 @@ bld/
 # Visual Studio 2015 cache/options directory
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
-wwwroot/
+# wwwroot
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -245,3 +245,9 @@ ModelManifest.xml
 # Ignore OpenGameList project specific *.js files
 src/OpenGameListWebApp/Scripts/**/*.js
 src/OpenGameListWebApp/Scripts/**/*.map
+
+# Ignore OpenGameList wwwroot subfolders
+src/OpenGameListWebApp/wwwroot/app
+src/OpenGameListWebApp/wwwroot/css
+src/OpenGameListWebApp/wwwroot/js
+
