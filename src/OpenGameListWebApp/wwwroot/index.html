@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <base href="/" />
+    <title>OpenGameList</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" media="screen" />
+
+    <!--Step 1. Load Libraries-->
+    <!--Polyfill(s) for older browsers-->
+    <script src="js/shim.min.js"></script>
+    <script src="js/zone.js"></script>
+    <script src="js/Reflect.js"></script>
+    <script src="js/system.src.js"></script>
+    <script src="js/typescript.js"></script>
+
+    <!--Angular2 Native Directives-->
+    <script src="/js/moment.js"></script>
+    <script src="/js/ngx-bootstrap.umd.min.js"></script>
+
+    <!--Step 2. Configure SystemJS-->
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('app').catch(function (err) { console.log(err); });
+    </script>
+</head>
+<body>
+    <opengamelist>Loading...</opengamelist>
+</body>
+</html>
