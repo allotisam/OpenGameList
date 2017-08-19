@@ -2,13 +2,14 @@
 import { Http, Response, Headers, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { Item } from "./item";
+import { AuthHttp } from "./auth.http";
 
 @Injectable()
 export class ItemService {
 
     private baseUrl = "api/items/";
 
-    constructor(private http: Http) { }
+    constructor(private http: AuthHttp) { }
 
     getLatest(num?: number) {
         var url = this.baseUrl + "GetLatest/";
